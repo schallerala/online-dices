@@ -3,8 +3,15 @@ var http = require('http').createServer(app)
 var io = require('socket.io')(http)
 
 var public_socket_infos = {}
+
+// stores rooms state info
+// - name, 
+// - count, 
+// - waiting_for_players
 var rooms_state = {}
 
+
+// convert json object to array 
 function json_to_array(json) {
     var res = []
     var props = Object.keys(json);
@@ -16,15 +23,15 @@ function json_to_array(json) {
     return res
 }
 
+// list of all rooms 
 function rooms_list(socket) {
     var res = []
-    var rooms = socket.adapter.rooms
-    var rooms_names = Object.keys(rooms);
-    for(var idx in rooms_names) {
-        var room = rooms_names[idx]
-        res.push({"name": room, "count": rooms[room].length})
+    var rooms = json_to_array(rooms_state)
+    for(var idx in rooms) {
+      var room = rooms[idx].name
+      var waiting_for_players = rooms_state[room].waiting_for_players
+      res.push({"name": room, "count": 0, "waiting_for_players": waiting_for_players})
     }
-
     return res
 }
 
@@ -98,7 +105,6 @@ function get_possible_dices_scores(socket) {
 
 // socket connection
 io.on('connection', function(socket){
-  console.log('a user connected')
 
   // user register
   socket.on('username', function(username){
@@ -164,7 +170,10 @@ io.on('connection', function(socket){
 
       // check if it is the host
       if(room_state.host == socket.id) {
+
+        // start game for all players in the room 
         room_state.waiting_for_players = false
+        io.sockets.in(room).emit('first_player', 0)
         io.sockets.in(room).emit('waiting_for_players', false)
       }
   })
@@ -185,7 +194,6 @@ io.on('connection', function(socket){
 
     // TODO check emitting socket == the current playing user
     // ... 
-    console.log("change turn", rooms_state)
 
     var room = room_of(socket)
     var room_size = list_of_user_in_room(room).length
@@ -195,7 +203,7 @@ io.on('connection', function(socket){
 
 
   socket.on('disconnect', function(){
-    console.log('player disconnected')
+    // do smthing
   })
 })
 

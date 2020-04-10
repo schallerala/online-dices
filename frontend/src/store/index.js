@@ -6,14 +6,15 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    rooms: [],
-    users: [],
-    current_user_idx: 0,
-    user_num: 0,
-    scores:[],
-    waiting_for_players: true,
-    game_host: 0,
-    socket_id: 0
+    rooms: [],                  // all rooms 
+    users: [],                  // all users of the game
+    current_user_idx: 0,        // current player playing
+    user_num: 0,                // local player game number
+    scores:[],                  // list of possible scores of dices
+    waiting_for_players: true,  // is the game waiting for players
+    game_host: 0,               // host of the game
+    socket_id: 0,               // local player socket id
+    first_player :0,            // choose the round goal
   },
   mutations: {
     SOCKET_rooms (state, rooms) {
@@ -39,6 +40,9 @@ const store = new Vuex.Store({
     },
     SOCKET_socket_id(state, sid) {
       state.socket_id = sid
+    },
+    SOCKET_first_player(state, first_player) {
+      state.first_player = first_player
     }
   }
 })

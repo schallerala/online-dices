@@ -1,19 +1,25 @@
 <template>
   <div id="rooms_list">
 
-    <input type="button" value="Refresh" v-on:click="refresh_rooms">
-    <ul id="rooms">
-      <li class="room" 
-          v-for="room in rooms_list" :key="room.name" v-on:click="join_room(room.name)"
+    <h1>Liste des parties</h1>
+
+    <div class="game_creator_panel">
+      <input v-model="room_name" type="text" placeholder="Nom de la partie"/>
+      <input type="button" value="Créer" v-on:click="join_room(room_name)">
+    </div>
+
+    <div id="rooms">
+      <div class="room" 
+          v-for="room in available_rooms_list" :key="room.name" 
+          v-on:click="join_room(room.name)"
       >
-        <p>{{room.name}}</p> <span class="count">{{room.count}}</span>
-      </li>
-    </ul> 
+        <p>{{room.name}} ({{room.count}} pers.)</p>
+      </div>
+    </div> 
+    <input type="button" value="Refresh" v-on:click="refresh_rooms">
+    
 
-    <h3>Créer une partie</h3>
-    <input v-model="room_name" type="text" placeholder="Nom de la partie"/>
-    <input type="button" value="Créer" v-on:click="join_room(room_name)">
-
+    
   </div>
 </template>
 
@@ -40,8 +46,11 @@ export default {
     }
   },
   computed: {
+    available_rooms_list() {
+      return this.rooms_list
+      //return this.rooms_list.filter(room => room.waiting_for_players)
+    },
     rooms_list () {
-      console.log("rooms", this.$store.state.rooms)
       return this.$store.state.rooms
     }
   }
@@ -49,12 +58,16 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+#rooms {
+  display: flex;
+  flex-direction: column;
+}
+
+.room {
+  padding:5px 20px;
+  background: #f3cd32;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
 }
 </style>

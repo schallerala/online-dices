@@ -2,6 +2,7 @@
   <div id="game">
     <h1>Partie en cours</h1>
 
+
     <div id="board">
 
       <div v-if="waiting_for_players" id="waiting_screen">
@@ -11,91 +12,14 @@
 
 
       <div v-if="!waiting_for_players" id="live-roll">
+
+        <Leaderboard/>
+
         <h1>{{current_user.name}} is playing...</h1>
-          <div id="dices">
-            <div class="rolled_die" v-for="(die, idx) in current_user.dices" :key=idx 
-                  v-on:click="select_die(idx)" >
 
+        <!-- only display to first player -->
+        <GameScorePicker />
 
-                <div 
-                  class="die" 
-                  id="die_1"
-                  v-bind:class="{ selected: selected[idx]}" 
-                  v-if="die == 1">
-                  <div class="point" id="p_1_1"></div>
-                </div>
-
-                <div 
-                  class="die" 
-                  id="die_2" 
-                  v-bind:class="{ selected: selected[idx]}" 
-                  v-if="die == 2">
-
-                  <div class="point" id="p_2_1"></div>
-                  <div class="point" id="p_2_2"></div> 
-                </div>
-
-                <div 
-                  class="die" 
-                  id="die_3" 
-                  v-bind:class="{ selected: selected[idx]}" 
-                  v-if="die == 3">
-
-                  <div class="point" id="p_3_1"></div>
-                  <div class="point" id="p_3_2"></div>
-                  <div class="point" id="p_3_3"></div> 
-                </div>
-
-
-                <div 
-                  class="die" 
-                  id="die_4"  
-                  v-bind:class="{ selected: selected[idx]}" 
-                  v-if="die == 4">
-
-                  <div class="point" id="p_4_1"></div>
-                  <div class="point" id="p_4_2"></div>
-                  <div class="point" id="p_4_3"></div>
-                  <div class="point" id="p_4_4"></div> 
-                </div>
-
-                <div 
-                  class="die" 
-                  id="die_5" 
-                  v-bind:class="{ selected: selected[idx]}" 
-                  v-if="die == 5">
-
-                  <div class="point" id="p_5_1"></div>
-                  <div class="point" id="p_5_2"></div>
-                  <div class="point" id="p_5_3"></div>
-                  <div class="point" id="p_5_4"></div> 
-                  <div class="point" id="p_5_5"></div> 
-                </div>
-
-
-                <div 
-                  class="die" 
-                  id="die_6" 
-                  v-bind:class="{ selected: selected[idx]}" 
-                  v-if="die == 6">
-
-                  <div class="point" id="p_6_1"></div>
-                  <div class="point" id="p_6_2"></div>
-                  <div class="point" id="p_6_3"></div>
-                  <div class="point" id="p_6_4"></div> 
-                  <div class="point" id="p_6_5"></div> 
-                  <div class="point" id="p_6_6"></div>
-                </div>
-              </div>
-        </div>
-
-        {{possible_scores}}
-
-        <div v-if="user_num == current_user_idx" id="dice_controls">
-          <input type="button" value="Lancer les dés" v-on:click="roll_dices">
-          <input type="button" value="Valider" v-on:click="end_turn">
-        </div>
-      </div>
 
       <div id="user_list">
           <div class="user" v-for="user in users_list" :key=user.name>
@@ -179,17 +103,19 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 
+import Leaderboard from './Leaderboard.vue'
+import GameScorePicker from './GameScorePicker.vue'
+
 export default {
-  name: 'RoomList',
-  components: {
-    
-  },
+  name: 'Game',
+  components: {  Leaderboard, GameScorePicker  },
   data: function(){
     return {
       room_name: "",
