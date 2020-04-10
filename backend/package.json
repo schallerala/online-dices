@@ -4,6 +4,7 @@
   "description": "Backend of the LaRoulette application",
   "main": "controller.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
