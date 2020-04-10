@@ -10,7 +10,10 @@ const store = new Vuex.Store({
     users: [],
     current_user_idx: 0,
     user_num: 0,
-    scores:[]
+    scores:[],
+    waiting_for_players: true,
+    game_host: 0,
+    socket_id: 0
   },
   mutations: {
     SOCKET_rooms (state, rooms) {
@@ -27,6 +30,15 @@ const store = new Vuex.Store({
     },
     SOCKET_scores(state, scores) {
       state.scores = scores
+    },
+    SOCKET_waiting_for_players(state, waiting) {
+      state.waiting_for_players = waiting
+    },
+    SOCKET_game_host(state, id) {
+      state.game_host = id
+    },
+    SOCKET_socket_id(state, sid) {
+      state.socket_id = sid
     }
   }
 })

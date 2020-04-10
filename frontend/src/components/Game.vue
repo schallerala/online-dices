@@ -3,7 +3,14 @@
     <h1>Partie en cours</h1>
 
     <div id="board">
-      <div id="live-roll">
+
+      <div v-if="waiting_for_players" id="waiting_screen">
+        <h1>Waiting on host to start the game.</h1>
+        <input v-if="game_host == socket_id" v-on:click="start_game" type="button" value="Start Game">
+      </div>
+
+
+      <div v-if="!waiting_for_players" id="live-roll">
         <h1>{{current_user.name}} is playing...</h1>
           <div id="dices">
             <div class="rolled_die" v-for="(die, idx) in current_user.dices" :key=idx 
@@ -203,6 +210,9 @@ export default {
     },
     end_turn: function() {
       this.$socket.emit('end_turn')
+    },
+    start_game: function() {
+      this.$socket.emit('start_game')
     }
   },
   computed: {
@@ -220,6 +230,15 @@ export default {
     },
     possible_scores() {
       return this.$store.state.scores
+    },
+    waiting_for_players(){
+      return this.$store.state.waiting_for_players
+    },
+    game_host() {
+      return this.$store.state.game_host
+    },
+    socket_id() {
+      return this.$store.state.socket_id
     }
   }
 }

@@ -121,7 +121,7 @@ io.on('connection', function(socket){
       if(!(room in rooms_state)) {
         rooms_state[room]={ 
           "current_user_idx": 0, 
-          "waiting_for_players": true,
+          "waiting_for_players": True,
           "host": socket.id
         }
       }
@@ -149,7 +149,6 @@ io.on('connection', function(socket){
 
       // send game infos
       console.log("send game host")
-      socket.emit('socket_id', socket.id)
       socket.emit('game_host', rooms_state[room].host)
       socket.emit('waiting_for_players', true)
     })
