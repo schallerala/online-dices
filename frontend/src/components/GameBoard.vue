@@ -3,7 +3,8 @@
 
 
       <!-- Roll dice and select the goal of the round -->
-      <GameScorePicker v-if="user_num == first_player" />
+      <!--<GameScorePicker v-if="user_num == first_player" />-->
+      <GameScorePicker />
 
   </div>
 </template>
