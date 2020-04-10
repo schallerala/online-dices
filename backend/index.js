@@ -163,6 +163,7 @@ io.on('connection', function(socket){
 
 
 
+
   // start a game
   socket.on("start_game", function(){
       var room = room_of(socket)

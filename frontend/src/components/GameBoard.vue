@@ -1,32 +1,20 @@
 <template>
-  <div id="game">
-
-    <div v-if="waiting_for_players" id="waiting_screen">
-      <h1>Waiting on host to start the game.</h1>
-      <input v-if="game_host == socket_id" v-on:click="start_game" type="button" value="Start Game">
-    </div>
+  <div id="game-board">
 
 
-    <div v-if="!waiting_for_players" id="game-panel">
+      <!-- Roll dice and select the goal of the round -->
+      <GameScorePicker v-if="user_num == first_player" />
 
-      <!-- Leader board -->
-      <Leaderboard/>
-
-      <GameBoard/>
-
-
-    </div>
   </div>
 </template>
 
 <script>
 
-import Leaderboard from './Leaderboard.vue'
-import GameBoard from './GameBoard.vue'
+import GameScorePicker from './GameScorePicker.vue'
 
 export default {
-  name: 'Game',
-  components: {  Leaderboard, GameBoard  },
+  name: 'GameBoard',
+  components: { GameScorePicker  },
   data: function(){
     return {
     }
